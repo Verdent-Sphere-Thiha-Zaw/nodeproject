@@ -15,10 +15,10 @@ jobs:
     with:
       node-version: '20'
 
-  # codeql: #Public Repo Only
-  #   name: Scan Code QL
-  #   needs: [build]
-  #   uses: ./.github/workflows/codeql.yaml
+  codeql: #Public Repo Only
+    name: Scan Code QL
+    needs: [build]
+    uses: ./.github/workflows/codeql.yaml
 
   test:
     name: Test
@@ -34,20 +34,20 @@ jobs:
     with:
       node-version: '20'
 
-  # owasp:
-  #   name: ZAP Check
-  #   needs: [test]
-  #   uses: ./.github/workflows/owasp.yaml
-
-  sec:
-    name: Sec Check
+  owasp:
+    name: ZAP Check
     needs: [test]
-    uses: ./.github/workflows/security.yaml
-    secrets:
-      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    with:
-      node-version: '20'
+    uses: ./.github/workflows/owasp.yaml
+
+  # sec:
+  #   name: Sec Check
+  #   needs: [test]
+  #   uses: ./.github/workflows/security.yaml
+  #   secrets:
+  #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #   with:
+  #     node-version: '20'
 
   push:
     name: Push
