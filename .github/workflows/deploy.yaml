@@ -2,8 +2,8 @@ name: deploy
 
 on:
   workflow_call:
-
-deploy:
+jobs:
+  deploy:
     runs-on: ubuntu-latest  # Use the latest Ubuntu image
     steps:
     - name: Checkout repository
