@@ -1,0 +1,12 @@
+name: "CD Workflow"
+on: 
+    workflow_dispatch:
+      branches:
+        - dev
+        - main
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/deploy.yaml
+  
