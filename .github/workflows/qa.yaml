@@ -1,0 +1,16 @@
+name: "QA Workflow"
+
+on: workflow_dispatch
+
+jobs:
+  build-with-version-13:
+    name: Build app with version 23
+    uses: ./.github/workflows/build.yaml
+    with:
+      node-version: '23'
+
+  build-with-version-20:
+    name: Build App with version 20
+    uses: ./.github/workflows/build.yaml
+    with:
+      node-version: '20'

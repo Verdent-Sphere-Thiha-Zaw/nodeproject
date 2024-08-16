@@ -1,0 +1,28 @@
+name: "Reusable Workflow for Test"
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+jobs:
+  build:
+    name: Testing Workflow
+    runs-on: ubuntu-latest
+    # services:
+    #   mysql:
+    #     image: mysql:latest
+        # env:
+        #   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          # MYSQL_DATABASE: your_database_name
+    steps:
+      - name: Checkout App
+        uses: actions/checkout@v4
+
+      - uses: ./.github/prepare-action
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      # - name: Test the App
+      #   run:
+      #     npm run test
