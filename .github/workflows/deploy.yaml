@@ -1,14 +1,9 @@
-name: "CD Workflow"
-on: 
-  workflow_dispatch:
-    branches:
-        - dev
-        - main
-concurrency:
-  group: cd-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-jobs:
-  deploy:
+name: deploy
+
+on:
+  workflow_call:
+
+deploy:
     runs-on: ubuntu-latest  # Use the latest Ubuntu image
     steps:
     - name: Checkout repository

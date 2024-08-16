@@ -1,0 +1,14 @@
+name: "CD Workflow"
+on: 
+    workflow_dispatch:
+      branches:
+        - dev
+        - main
+concurrency:
+  group: cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/deploy.yaml
+  
