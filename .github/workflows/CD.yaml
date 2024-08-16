@@ -4,9 +4,7 @@ on:
       branches:
         - dev
         - main
-concurrency:
-  group: cd-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+
 jobs:
   build:
     name: Build
