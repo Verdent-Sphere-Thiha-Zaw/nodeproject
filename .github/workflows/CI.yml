@@ -15,29 +15,29 @@ jobs:
     with:
       node-version: '20'
 
-  codeql: #Public Repo Only
-    name: Scan Code QL
-    needs: [build]
-    uses: ./.github/workflows/codeql.yaml
+  # codeql: #Public Repo Only
+  #   name: Scan Code QL
+  #   needs: [build]
+  #   uses: ./.github/workflows/codeql.yaml
 
-  test:
-    name: Test
-    needs: [build]
-    uses: ./.github/workflows/test.yaml
-    with:
-      node-version: '20'
+  # test:
+  #   name: Test
+  #   needs: [build]
+  #   uses: ./.github/workflows/test.yaml
+  #   with:
+  #     node-version: '20'
 
-  release:
-    name: Release
-    needs: [test]
-    uses: ./.github/workflows/release.yaml
-    with:
-      node-version: '20'
+  # release:
+  #   name: Release
+  #   needs: [test]
+  #   uses: ./.github/workflows/release.yaml
+  #   with:
+  #     node-version: '20'
 
-  owasp:
-    name: ZAP Check
-    needs: [test]
-    uses: ./.github/workflows/owasp.yaml
+  # owasp:
+  #   name: ZAP Check
+  #   needs: [test]
+  #   uses: ./.github/workflows/owasp.yaml
 
   # sec:
   #   name: Sec Check
@@ -49,12 +49,37 @@ jobs:
   #   with:
   #     node-version: '20'
 
-  push:
-    name: Push
-    needs: [sec]
-    uses: ./.github/workflows/push.yaml
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    with:
-      node-version: '20'
+  # push:
+  #   name: Push
+  #   needs: [sec]
+  #   uses: ./.github/workflows/push.yaml
+  #   secrets:
+  #     DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  #     DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  #   with:
+  #     node-version: '20'
+---
+name: "CD Workflow"
+on: workflow_dispatch
+concurrency:
+  group: cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu image
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: 'dev'
+
+    - name: Set up SSH for GitHub Actions
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          whoami
+          ls -al
